@@ -130,7 +130,7 @@ Need help or have questions? We'd love to hear from you!
 - [<img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/twitter.svg" width="16" height="16"> Twitter](https://twitter.com/FutureFund)
 - [<img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/linkedin.svg" width="16" height="16"> LinkedIn](https://linkedin.com/company/FutureFund)
 
-## 🚀 Ready to Start?
+##  Ready to Start?
 
 <div align="center">
   
