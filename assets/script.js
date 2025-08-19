@@ -685,6 +685,64 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const downloadBtn = document.getElementById("downloadPDF");
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", generatePDF);
+  }
+});
+
+async function generatePDF() {
+  const { jsPDF } = window.jspdf;
+
+  // Select the results section
+  const resultsSection = document.getElementById("results");
+  if (!resultsSection) {
+    showAlert("No results found to export.", "warning");
+    return;
+  }
+
+  try {
+    // Use html2canvas to screenshot results section
+    const canvas = await html2canvas(resultsSection, {
+      scale: 2, // better resolution
+      useCORS: true
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    // Page dimensions
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // Image dimensions
+    const imgWidth = pageWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    // First page
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    // If content is larger than one page
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    // Save PDF
+    pdf.save("Retirement_Results.pdf");
+    showAlert("PDF downloaded successfully!", "success");
+  } catch (error) {
+    console.error("PDF generation failed:", error);
+    showAlert("Error generating PDF. Check console for details.", "danger");
+  }
+}
 // Dark mode for navbar
 
 function toggleTheme() {
